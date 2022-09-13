@@ -35,7 +35,8 @@ public class App {
                 if (value == null) {
                     types.put(key, "null");
                 } else {
-                    types.put(key, String.valueOf(value.getClass()));
+                    String type = getType(String.valueOf(value.getClass()));
+                    types.put(key, type);
                 }
             }
             if (value instanceof Map) {
@@ -51,6 +52,15 @@ public class App {
                 });
             }
         });
+    }
+
+    private static String getType(String className) {
+        String[] split = className.split("\\.");
+        String rawType = split[split.length - 1];
+
+        if (rawType.equals("Integer"))
+            return "Number";
+        return rawType;
     }
 
 }
