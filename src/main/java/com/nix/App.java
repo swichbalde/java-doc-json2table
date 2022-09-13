@@ -18,22 +18,20 @@ public class App {
         Map<String, Object> jsonElements = new ObjectMapper().readValue(new File("src/main/resources/request.json"), new TypeReference<>() {
         });
 
-        Map<String, Object> values = new LinkedHashMap<>();
         Map<String, String> types = new LinkedHashMap<>();
 
-        getAllKeys(jsonElements, keys, values, types);
+        getAllKeys(jsonElements, keys, types);
 
         for (String key : keys) {
-            System.out.println(key + " , " + types.get(key) + " , " + values.get(key));
+            System.out.println(key + "," + types.get(key));
         }
     }
 
-    private static void getAllKeys(Map<String, Object> jsonElements, List<String> keys, Map<String, Object> values, Map<String, String> types) {
+    private static void getAllKeys(Map<String, Object> jsonElements, List<String> keys, Map<String, String> types) {
 
         jsonElements.forEach((key, value) -> {
             keys.add(key);
             if (!(value instanceof List)) {
-                values.put(key, value);
                 if (value == null) {
                     types.put(key, "null");
                 } else {
@@ -42,13 +40,13 @@ public class App {
             }
             if (value instanceof Map) {
                 Map<String, Object> map = (Map<String, Object>) value;
-                getAllKeys(map, keys, values, types);
+                getAllKeys(map, keys, types);
             } else if (value instanceof List) {
                 List<?> list = (List<?>) value;
                 list.forEach(listEntry -> {
                     if (listEntry instanceof Map) {
                         Map<String, Object> map = (Map<String, Object>) listEntry;
-                        getAllKeys(map, keys, values, types);
+                        getAllKeys(map, keys, types);
                     }
                 });
             }
